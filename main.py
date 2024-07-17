@@ -6,7 +6,7 @@ import csv
 import pandas
 import shutil
 
-path_to_data = "/home/samuli/Desktop/test_tools/unixbench/results/Lenovo-X1"
+path_to_data = "/home/samuli/Desktop/test_tools/unixbench/results/Orin-NX"
 
 # Dictionary defining locations where to extract each result value.
 parse_config = [
@@ -63,8 +63,13 @@ def extract_value(file, threads, detect_str, offset, str1, str2):
         row_index = 0
         match_index = -1
 
+        # When extracting multi-thread results cut the single-thread results away.
+        # The line of cut depends on number of available threads.
         if threads == "multi":
-            lines = lines[66:]
+            if "Lenovo-X1" in path_to_data or "Orin-AGX" in path_to_data:
+                lines = lines[66:]
+            if "Orin-NX" in path_to_data:
+                lines = lines[58:]
 
         for row in lines:
             # find() method returns -1 if the value is not found,
